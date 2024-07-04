@@ -3,150 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>saral seva: Health</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <style>
-        *{
-            margin: 0;
-            padding: 0;
-        }
-        .section {
-            margin-bottom: 20px;
-            padding: 30px;
-        }
-        .ins{
-          margin-left: 30px;
-        }
-        .map {
-            width: 100%;
-            height: 400px;
-            background-color: #f0f0f0;
-        }
-        
-        /* .map{
-            width: 450px;
-            height: 450px;
-            background-color: aqua;
-            margin: 5vh 15vw;
-        } */
-        .symp{
-            display: flex;
-            flex-direction: column;
-        }
-        .symptoms{
-            width: 30vw;
-            height: 5vh;
-            margin: 2vh 0 2vh 15vw;
-            font-size: medium;
-            padding: 3px 15px  ;
-        }
-        .labelc{
-            font-weight: 700;
-            font-size: 30px;
-        }
-        .bttn{
-            margin: 2vh 0 2vh 15vw;
-        }
-        .butn{
-            margin: 2vh 0 2vh 2vw;
-        }
-        .consult{
-            margin: 5vh 0;
-            height: 10vh;
-            width:60vw;
-            background-color: aquamarine;
-            display: flex;
-            /* justify-content: center; */
-            align-items: center;
-            border-radius: 5px;
-            justify-content: space-between;
-            padding: 0 1vw;
-        }
-        .mx-2{
-            margin: 0 4vw;
-        }
-        .consult_para{
-            font-size: larger;
-        }
-        .list{
-          display: flex;
-          justify-content: space-between;
-          width: 50vw;
-          padding: 0 20px;
-          height: 10vh;
-          background-color: rgb(220, 191, 184);
-          align-items: center;
-          border-radius: 10px;
-        }
-        .list p{
-          font-size: larger;
-          font-weight: 600;
-        }
-    </style>
+    <title>Health Sector and ML Predictions</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS (if any) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="nvbar">
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #45526e">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Health Insights</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" style="font-size: larger;" href="#">Health</a>
-              </li>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/healthpredict">Predict Disease</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
             </ul>
-            <form class="d-flex">
-             <a href="#" class="btn btn-outline-danger">Admin login</a>
-            </form>
-          </div>
         </div>
-      </nav>
-    </div>
+    </nav>
 
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <h1 class="text-center">Welcome to Health Sector Insights</h1>
 
-    
-      <div class="ins">
-          <h2>How it works</h2>
-          <p>1: Enter the symptoms</p>
-          <p>2: Consult to a listed clinics doctor Or </p>
-          <p>3: Find doctor near to you</p>
-      </div>
-      
-      <hr><hr>
-      <div class="section">
-        <h2>Enter Symptoms</h2>
-        <form>
-            <label for="symptom1">Symptom 1 (required):</label>
-            <input type="text" id="symptom1" name="symptom1" required>
-            <br><br>
-            <label for="symptom2">Symptom 2:</label>
-            <input type="text" id="symptom2" name="symptom2">
-            <br><br>
-            <label for="symptom3">Symptom 3:</label>
-            <input type="text" id="symptom3" name="symptom3">
-            <br><br>
-            <button type="submit" class="btn btn-outline-success">Submit</button>
-            <button type="reset" class="btn btn-outline-danger mx-2">Reset</button>
-        </form>
-    </div>
+        <!-- Doctor Image -->
+        <div class="text-center my-4">
+            <img src="{{ url_for('static', filename='images/doctor.jpg') }}" class="img-fluid rounded" alt="Doctor">
+        </div>
 
-    <div class="section">
-        <h2>Check Listed Clinics</h2>
-        <div class="list">
-            <p>Check the listed clinics</p><a href="#"><button class="btn btn-outline-dark">Check here</button></a>
+        <!-- Health Sector Information -->
+        <div class="info my-5">
+            <h2>About the Health Sector</h2>
+            <p>
+                The health sector is an ever-evolving industry, critical to the well-being and economic stability of societies worldwide. It encompasses a wide range of services provided by various healthcare providers such as hospitals, clinics, and private practices.
+                Advancements in medical technology, pharmaceuticals, and treatments continually transform the landscape, improving patient outcomes and extending life expectancy.
+            </p>
+            <p>
+                With the integration of cutting-edge technology, the health sector is moving towards more personalized and efficient care. This includes the use of electronic health records (EHRs), telemedicine, and advanced diagnostic tools.
+            </p>
+        </div>
+
+        <!-- ML Predictions in Healthcare -->
+        <div class="ml-info my-5">
+            <h2>Machine Learning Predictions in Healthcare</h2>
+            <p>
+                Machine Learning (ML) is revolutionizing healthcare by providing powerful tools to analyze vast amounts of data. ML algorithms can predict disease outcomes, personalize treatment plans, and improve diagnostic accuracy.
+            </p>
+            <p>
+                For example, ML models can predict patient readmissions, identify potential outbreaks, and even assist in early cancer detection. The ability to process and analyze large datasets allows healthcare providers to make more informed decisions, leading to better patient outcomes.
+            </p>
+            <p>
+                As ML technology continues to evolve, its impact on the health sector is expected to grow, offering new opportunities for innovation and efficiency in patient care.
+            </p>
         </div>
     </div>
 
-    <div class="section">
-        <h2>Find Near Doctor</h2>
-        <div id="map" class="map"></div>
-    </div>
-   
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
