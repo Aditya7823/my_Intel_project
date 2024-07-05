@@ -82,7 +82,7 @@
 
         .container {
             width: 80%;
-            max-width: 400px;
+            max-width: 600px; /* Increased max-width for better readability */
             background-color: #10102b; /* Slightly lighter navy blue */
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -140,6 +140,16 @@
         button:hover {
             background-color: #45a049;
         }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #45a049; /* Green */
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2rem; /* Increased font size for better readability */
+        }
     </style>
 </head>
 
@@ -147,9 +157,10 @@
     <header>
         <div class="logo">Swasthya _saralseva</div>
     </header>
+    
     <div class="container">
         <h1>Disease Predictor - Save Your Life</h1>
-        <form action="/symptomes" method="post">
+        <form action="/symptoms" method="post">
             <label for="select1">Symptom 1:</label>
             <select name="select1" id="select1">
                 <option value="select_symptom">Select suitable symptoms</option>
@@ -244,6 +255,11 @@
             </select><br>
             <button type="submit">Predict Disease</button>
         </form>
+        {% if result %}
+        <div class="result">
+            <p>{{ result }}</p>
+        </div>
+        {% endif %}
     </div>
 </body>
 
