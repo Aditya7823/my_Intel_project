@@ -1,147 +1,85 @@
-from flask import Flask, render_template, request
-from flask_cors import CORS
-import joblib
+from flask import Flask, request, render_template
 import numpy as np
+import pickle
 
 app = Flask(__name__)
-CORS(app)
 
-# Load your pre-trained models
-model = joblib.load('models/disease_classifier.pkl')
-model1 = joblib.load('models/disease_classifier_random.pkl')
-model2 = joblib.load('models/disease_classifier_bayes.pkl')
+# Load the pre-trained model
+with open('model.pkl', 'rb') as f:
+    model = pickle.load(f)
 
-@app.route('/')
-def home():
-    return render_template('unati2.html')
+# Define symptoms and corresponding indices in your feature space
+symptom_index = {
+    'back_pain': 0, 'constipation': 1, 'abdominal_pain': 2, 'diarrhoea': 3, 'mild_fever': 4,
+    'yellow_urine': 5, 'yellowing_of_eyes': 6, 'acute_liver_failure': 7, 'fluid_overload': 8,
+    'swelling_of_stomach': 9, 'swelled_lymph_nodes': 10, 'malaise': 11, 'blurred_and_distorted_vision': 12,
+    'phlegm': 13, 'throat_irritation': 14, 'redness_of_eyes': 15, 'sinus_pressure': 16, 'runny_nose': 17,
+    'congestion': 18, 'chest_pain': 19, 'weakness_in_limbs': 20, 'fast_heart_rate': 21, 'pain_during_bowel_movements': 22,
+    'pain_in_anal_region': 23, 'bloody_stool': 24, 'irritation_in_anus': 25, 'neck_pain': 26, 'dizziness': 27,
+    'cramps': 28, 'bruising': 29, 'obesity': 30, 'swollen_legs': 31, 'swollen_blood_vessels': 32,
+    'puffy_face_and_eyes': 33, 'enlarged_thyroid': 34, 'brittle_nails': 35, 'swollen_extremities': 36,
+    'excessive_hunger': 37, 'extra_marital_contacts': 38, 'drying_and_tingling_lips': 39, 'slurred_speech': 40,
+    'knee_pain': 41, 'hip_joint_pain': 42, 'muscle_weakness': 43, 'stiff_neck': 44, 'swelling_joints': 45,
+    'movement_stiffness': 46, 'spinning_movements': 47, 'loss_of_balance': 48, 'unsteadiness': 49,
+    'weakness_of_one_body_side': 50, 'loss_of_smell': 51, 'bladder_discomfort': 52, 'foul_smell_of_urine': 53,
+    'continuous_feel_of_urine': 54, 'passage_of_gases': 55, 'internal_itching': 56, 'toxic_look_(typhos)': 57,
+    'depression': 58, 'irritability': 59, 'muscle_pain': 60, 'altered_sensorium': 61, 'red_spots_over_body': 62,
+    'belly_pain': 63, 'abnormal_menstruation': 64, 'dischromic_patches': 65, 'watering_from_eyes': 66,
+    'increased_appetite': 67, 'polyuria': 68, 'family_history': 69, 'mucoid_sputum': 70, 'rusty_sputum': 71,
+    'lack_of_concentration': 72, 'visual_disturbances': 73, 'receiving_blood_transfusion': 74,
+    'receiving_unsterile_injections': 75, 'coma': 76, 'stomach_bleeding': 77, 'distention_of_abdomen': 78,
+    'history_of_alcohol_consumption': 79, 'fluid_overload': 80, 'blood_in_sputum': 81, 'prominent_veins_on_calf': 82,
+    'palpitations': 83, 'painful_walking': 84, 'pus_filled_pimples': 85, 'blackheads': 86, 'scurring': 87,
+    'skin_peeling': 88, 'silver_like_dusting': 89, 'small_dents_in_nails': 90, 'inflammatory_nails': 91,
+    'blister': 92, 'red_sore_around_nose': 93, 'yellow_crust_ooze': 94
+}
 
-@app.route('/health')
-def index():
-    return render_template('health.html')
+# Route for rendering the symptoms selection form
 @app.route('/symptoms')
-def show_symptoms():
-    symptoms_list = [
-        'back_pain', 'constipation', 'abdominal_pain', 'diarrhoea', 'mild_fever', 'yellow_urine',
-        'yellowing_of_eyes', 'acute_liver_failure', 'fluid_overload', 'swelling_of_stomach',
-        'swelled_lymph_nodes', 'malaise', 'blurred_and_distorted_vision', 'phlegm', 'throat_irritation',
-        'redness_of_eyes', 'sinus_pressure', 'runny_nose', 'congestion', 'chest_pain', 'weakness_in_limbs',
-        'fast_heart_rate', 'pain_during_bowel_movements', 'pain_in_anal_region', 'bloody_stool',
-        'irritation_in_anus', 'neck_pain', 'dizziness', 'cramps', 'bruising', 'obesity', 'swollen_legs',
-        'swollen_blood_vessels', 'puffy_face_and_eyes', 'enlarged_thyroid', 'brittle_nails',
-        'swollen_extremities', 'excessive_hunger', 'extra_marital_contacts', 'drying_and_tingling_lips',
-        'slurred_speech', 'knee_pain', 'hip_joint_pain', 'muscle_weakness', 'stiff_neck', 'swelling_joints',
-        'movement_stiffness', 'spinning_movements', 'loss_of_balance', 'unsteadiness',
-        'weakness_of_one_body_side', 'loss_of_smell', 'bladder_discomfort', 'foul_smell_of_urine',
-        'continuous_feel_of_urine', 'passage_of_gases', 'internal_itching', 'toxic_look_(typhos)',
-        'depression', 'irritability', 'muscle_pain', 'altered_sensorium', 'red_spots_over_body', 'belly_pain',
-        'abnormal_menstruation', 'dischromic_patches', 'watering_from_eyes', 'increased_appetite', 'polyuria',
-        'family_history', 'mucoid_sputum', 'rusty_sputum', 'lack_of_concentration', 'visual_disturbances',
-        'receiving_blood_transfusion', 'receiving_unsterile_injections', 'coma', 'stomach_bleeding',
-        'distention_of_abdomen', 'history_of_alcohol_consumption', 'blood_in_sputum', 'prominent_veins_on_calf',
-        'palpitations', 'painful_walking', 'pus_filled_pimples', 'blackheads', 'scurring', 'skin_peeling',
-        'silver_like_dusting', 'small_dents_in_nails', 'inflammatory_nails', 'blister', 'red_sore_around_nose',
-        'yellow_crust_ooze'
-    ]
-
-    # HTML template as a string
-    template = """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Symptoms List</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    </head>
-    <body>
-        <div class="container mt-5">
-            <h1>Symptoms</h1>
-            <ul class="list-group">
-                {% for symptom in symptoms %}
-                    <li class="list-group-item">{{ symptom }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </body>
-    </html>
-    """
-    
-    return render_template_string(template, symptoms=symptoms_list)
-
-@app.route('/healthpredict', methods=['GET', 'POST'])
 def symptoms():
-    if request.method == 'POST':
-        # Retrieve selected symptoms from the form
-        select1 = request.form.get('select1')
-        select2 = request.form.get('select2')
-        select3 = request.form.get('select3')
-        select4 = request.form.get('select4')
-        
-        # List of all possible symptoms
-        symptoms_list = [
-            'back_pain', 'constipation', 'abdominal_pain', 'diarrhoea', 'mild_fever', 'yellow_urine',
-            'yellowing_of_eyes', 'acute_liver_failure', 'fluid_overload', 'swelling_of_stomach',
-            'swelled_lymph_nodes', 'malaise', 'blurred_and_distorted_vision', 'phlegm', 'throat_irritation',
-            'redness_of_eyes', 'sinus_pressure', 'runny_nose', 'congestion', 'chest_pain', 'weakness_in_limbs',
-            'fast_heart_rate', 'pain_during_bowel_movements', 'pain_in_anal_region', 'bloody_stool',
-            'irritation_in_anus', 'neck_pain', 'dizziness', 'cramps', 'bruising', 'obesity', 'swollen_legs',
-            'swollen_blood_vessels', 'puffy_face_and_eyes', 'enlarged_thyroid', 'brittle_nails',
-            'swollen_extremities', 'excessive_hunger', 'extra_marital_contacts', 'drying_and_tingling_lips',
-            'slurred_speech', 'knee_pain', 'hip_joint_pain', 'muscle_weakness', 'stiff_neck', 'swelling_joints',
-            'movement_stiffness', 'spinning_movements', 'loss_of_balance', 'unsteadiness',
-            'weakness_of_one_body_side', 'loss_of_smell', 'bladder_discomfort', 'foul_smell_of_urine',
-            'continuous_feel_of_urine', 'passage_of_gases', 'internal_itching', 'toxic_look_(typhos)',
-            'depression', 'irritability', 'muscle_pain', 'altered_sensorium', 'red_spots_over_body', 'belly_pain',
-            'abnormal_menstruation', 'dischromic_patches', 'watering_from_eyes', 'increased_appetite', 'polyuria',
-            'family_history', 'mucoid_sputum', 'rusty_sputum', 'lack_of_concentration', 'visual_disturbances',
-            'receiving_blood_transfusion', 'receiving_unsterile_injections', 'coma', 'stomach_bleeding',
-            'distention_of_abdomen', 'history_of_alcohol_consumption', 'blood_in_sputum', 'prominent_veins_on_calf',
-            'palpitations', 'painful_walking', 'pus_filled_pimples', 'blackheads', 'scurring', 'skin_peeling',
-            'silver_like_dusting', 'small_dents_in_nails', 'inflammatory_nails', 'blister', 'red_sore_around_nose',
-            'yellow_crust_ooze'
-        ]
-        
-        # List of diseases
-        diseases = [
-            'Fungal_infection', 'Allergy', 'GERD', 'Chronic_cholestasis', 'Drug_Reaction', 'Peptic_ulcer_diseae',
-            'AIDS', 'Diabetes', 'Gastroenteritis', 'Bronchial_Asthma', 'Hypertension', 'Migraine',
-            'Cervical_spondylosis', 'Paralysis_brain_hemorrhage', 'Jaundice', 'Malaria', 'Chicken_pox', 'Dengue',
-            'Typhoid', 'hepatitis_A', 'Hepatitis_B', 'Hepatitis_C', 'Hepatitis_D', 'Hepatitis_E',
-            'Alcoholic_hepatitis', 'Tuberculosis', 'Common_Cold', 'Pneumonia', 'Dimorphic_hemmorhoids',
-            'Heart_attack', 'Varicose_veins', 'Hypothyroidism', 'Hyperthyroidism', 'Hypoglycemia',
-            'Osteoarthristis', 'Arthritis', 'Varicose_veins', 'Acne', 'Urinary_tract_infection', 'Psoriasis',
-            'Impetigo', 'Paroymsal_Positional_Vertigo'
-        ]
-        
-        # Create input for the model
-        symptom_vector = [0] * len(symptoms_list)
-        selected_symptoms = [select1, select2, select3, select4]
-        
-        for symptom in selected_symptoms:
-            if symptom in symptoms_list:
-                index = symptoms_list.index(symptom)
-                symptom_vector[index] = 1
-        
-        input_data = [symptom_vector]
-        
-        # Predict using each model
-        predicted_diseases = set()
-        
-        predictions = [
-            model.predict(input_data),
-            model1.predict(input_data),
-            model2.predict(input_data)
-        ]
-        
-        for prediction in predictions:
-            disease_index = prediction[0]
-            predicted_diseases.add(diseases[disease_index])
-        
-        result = ', '.join(predicted_diseases)
-        
-        return render_template('healthpredict.html', result=result)
-    
-    return render_template('healthpredict.html')
+    return render_template('symptoms.html')
+
+# Route for handling the form submission and predicting the disease
+@app.route('/healthpredict', methods=['POST'])
+def predict():
+    # Retrieve the symptoms selected by the user
+    symptom1 = request.form.get('select1')
+    symptom2 = request.form.get('select2')
+    symptom3 = request.form.get('select3')
+    symptom4 = request.form.get('select4')
+
+    # Create a feature vector initialized to zero (assuming 95 features)
+    input_data = np.zeros(len(symptom_index))
+
+    # Set the corresponding indices to 1 if the symptom is selected
+    if symptom1 in symptom_index:
+        input_data[symptom_index[symptom1]] = 1
+    if symptom2 in symptom_index:
+        input_data[symptom_index[symptom2]] = 1
+    if symptom3 in symptom_index:
+        input_data[symptom_index[symptom3]] = 1
+    if symptom4 in symptom_index:
+        input_data[symptom_index[symptom4]] = 1
+
+    # Debug: Print the input data shape
+    print(f"Input data shape: {input_data.shape}")
+
+    # Debug: Print the input data for verification
+    print(f"Input data: {input_data}")
+
+    # Ensure the input data has the correct shape (1, 95) before predicting
+    input_data = input_data.reshape(1, -1)
+    print(f"Reshaped input data: {input_data.shape}")
+
+    # Predict the disease using the trained model
+    try:
+        prediction = model.predict(input_data)[0]
+    except ValueError as e:
+        print(f"Error during prediction: {e}")
+        prediction = "Error in prediction, please check input."
+
+    # Render the result in the healthpredict.html template
+    return render_template('symptoms.html', result=prediction)
 
 if __name__ == '__main__':
     app.run(debug=True)
