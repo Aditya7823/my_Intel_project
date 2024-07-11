@@ -1,266 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DocSage: Disease Predictor</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftJDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>saral seva: Health</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #1a1a3d; /* Very dark navy blue */
-            color: #d4d4d4; /* Light silver */
+        *{
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
         }
-
-        header {
-            width: 100%;
-            padding: 1rem 3%;
-            background-color: #10102b; /* Slightly lighter navy blue */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
+        .anime{
+            width: 90vw;
+            background-color: rgb(255, 255, 255);
+           font-size: 70px;
+           font-weight: 500;
+           min-width: 280px;
+           color: rgb(241, 113, 113);
+           font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         }
-
-        .logo {
-            font-family: 'Arial', sans-serif;
-            font-size: 2rem;
-            color: #d4d4d4; /* Light silver */
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            cursor: pointer;
-            margin-left: 2rem;
+        .anime span{
             position: relative;
         }
-
-        .logo::before {
-            content: '';
+        .anime span::before{
+            content:" your illness.";
+            color: #45526e;
+            animation: words 20s infinite ;
+        }
+        .anime span::after{
+            content: "";
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+            width: calc(100% + 8px);
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            opacity: 0;
-            transform: scaleX(0);
-            animation: logoAnimation 2s infinite;
+            background-color: #ffffff;
+            border-left: 2px solid #45526e;
+            right:-8px;
+            animation:cursor .10s infinite, typing 20s steps(14) infinite;
+        }
+        .service-section {
+            padding: 60px 0;
         }
 
-        @keyframes logoAnimation {
-            0% {
-                opacity: 0;
-                transform: scaleX(0);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scaleX(1);
-            }
-
-            100% {
-                opacity: 0;
-                transform: scaleX(0);
-            }
-        }
-
-        .logo:hover {
-            color: #f7f7f7; /* Lighter silver */
-            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
-            transform: translateX(10px);
-        }
-
-        .container {
-            width: 80%;
-            max-width: 600px; /* Increased max-width for better readability */
-            background-color: #10102b; /* Slightly lighter navy blue */
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-top: 6rem;
-        }
-
-        h1 {
-            text-align: center;
-            color: #d4d4d4; /* Light silver */
-            font-size: 1.8rem;
+        .service-section img {
+            max-width: 100%;
+            height: auto;
             margin-bottom: 20px;
         }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-            color: #d4d4d4; /* Light silver */
-            font-size: 1rem;
-            font-weight: bold;
+        .sec-container{
+            padding: 0 60px;
         }
-
-        select {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 1rem;
-            background-color: #f9f9f9;
-            transition: border-color 0.3s, background-color 0.3s;
-            color: #333;
+        @keyframes coursor{
+            to{
+                border-left: 2px solid #45526e;
+            }
         }
-
-        select:focus {
-            border-color: #4CAF50;
-            outline: none;
+        @keyframes words{
+            0%,20%{
+                content:" your illness."
+            }
+            21%,40%{
+                content:" a nearby doctor."
+            }
+            41%,60%{
+                content:" your clinic appointment."
+            }
+            61%,80%{
+                content:" a nearby doctor."
+            }
+            81%,100%{
+                content:" your illness."
+            }
         }
-
-        button {
-            width: 100%;
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin-top: 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: background-color 0.3s;
+        @keyframes typing{
+          10%,15%,30%,35%,50%,55%,70%,75%,90%,95%{
+            width: 0;
+          }  
+          5%,20%,25%,40%,45%,60%,65%,80%,85%{
+            width: calc(100% + 8px);
+          }
         }
-
-        button:hover {
-            background-color: #45a049;
+        .container{
+            margin: 5vh 2vw;
         }
-
-        .result {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #45a049; /* Green */
-            color: white;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 1.2rem; /* Increased font size for better readability */
+        img{
+            filter: saturate(100%);
+        }
+        .bold{
+            font-weight: 700;
+            text-decoration: none;
+            color: #ffffff;
+            margin-right: 2vw;
+        }
+        .bold:hover{
+          color: #ffffff;
+        }
+        .logo{
+            margin: 0 1vw ;
+        }
+        .bg-c{
+            /* background-color: aqua; */
+            border: 1px solid rgba(0, 0, 0, 0.604);
+            border-radius: 15px;
+            height: 65vh;
+        }
+        .form{
+            height: 50vh ;
+            margin:0 2vw;
+            padding:3vh 0 0 7vw ;
+        }
+        .select{
+            margin: 2vh 0;
+            padding: 5px 5px;
+        }
+        
+        .map{
+            margin: 5vh 10vw;
+            height: 80vh;
+            width: 70vw;
+            background-color: antiquewhite;
         }
     </style>
 </head>
-
 <body>
-    <header>
-        <div class="logo">Swasthya _saralseva</div>
-    </header>
-    
-    <div class="container">
-        <h1>Disease Predictor - Save Your Life</h1>
-        <form action="/symptoms" method="post">
-            <label for="select1">Symptom 1:</label>
-            <select name="select1" id="select1">
-                <option value="select_symptom">Select suitable symptoms</option>
-                <option value="back_pain">back_pain</option>
-                <option value="abdominal_pain">abdominal_pain</option>
-                <option value="diarrhoea">diarrhoea</option>
-                <option value="mild_fever">mild_fever</option>
-                <option value="yellow_urine">yellow_urine</option>
-                <option value="yellowing_of_eyes">yellowing_of_eyes</option>
-                <option value="acute_liver_failure">acute_liver_failure</option>
-                <option value="fluid_overload">fluid_overload</option>
-                <option value="swelling_of_stomach">swelling_of_stomach</option>
-                <option value="swelled_lymph_nodes">swelled_lymph_nodes</option>
-                <option value="malaise">malaise</option>
-                <option value="blurred_and_distorted_vision">blurred_and_distorted_vision</option>
-                <option value="phlegm">phlegm</option>
-                <option value="throat_irritation">throat_irritation</option>
-                <option value="redness_of_eyes">redness_of_eyes</option>
-                <option value="sinus_pressure">sinus_pressure</option>
-                <option value="runny_nose">runny_nose</option>
-                <option value="congestion">congestion</option>
-                <option value="chest_pain">chest_pain</option>
-            </select><br>
-            <label for="select2">Symptom 2:</label>
-            <select name="select2" id="select2">
-                <option value="select_symptom">Select suitable symptoms</option>
-                <option value="back_pain">back_pain</option>
-                <option value="abdominal_pain">abdominal_pain</option>
-                <option value="diarrhoea">diarrhoea</option>
-                <option value="mild_fever">mild_fever</option>
-                <option value="yellow_urine">yellow_urine</option>
-                <option value="yellowing_of_eyes">yellowing_of_eyes</option>
-                <option value="acute_liver_failure">acute_liver_failure</option>
-                <option value="fluid_overload">fluid_overload</option>
-                <option value="swelling_of_stomach">swelling_of_stomach</option>
-                <option value="swelled_lymph_nodes">swelled_lymph_nodes</option>
-                <option value="malaise">malaise</option>
-                <option value="blurred_and_distorted_vision">blurred_and_distorted_vision</option>
-                <option value="phlegm">phlegm</option>
-                <option value="throat_irritation">throat_irritation</option>
-                <option value="redness_of_eyes">redness_of_eyes</option>
-                <option value="sinus_pressure">sinus_pressure</option>
-                <option value="runny_nose">runny_nose</option>
-                <option value="congestion">congestion</option>
-                <option value="chest_pain">chest_pain</option>
-            </select><br>
-            <label for="select3">Symptom 3:</label>
-            <select name="select3" id="select3">
-                <option value="select_symptom">Select suitable symptoms</option>
-                <option value="back_pain">back_pain</option>
-                <option value="abdominal_pain">abdominal_pain</option>
-                <option value="diarrhoea">diarrhoea</option>
-                <option value="mild_fever">mild_fever</option>
-                <option value="yellow_urine">yellow_urine</option>
-                <option value="yellowing_of_eyes">yellowing_of_eyes</option>
-                <option value="acute_liver_failure">acute_liver_failure</option>
-                <option value="fluid_overload">fluid_overload</option>
-                <option value="swelling_of_stomach">swelling_of_stomach</option>
-                <option value="swelled_lymph_nodes">swelled_lymph_nodes</option>
-                <option value="malaise">malaise</option>
-                <option value="blurred_and_distorted_vision">blurred_and_distorted_vision</option>
-                <option value="phlegm">phlegm</option>
-                <option value="throat_irritation">throat_irritation</option>
-                <option value="redness_of_eyes">redness_of_eyes</option>
-                <option value="sinus_pressure">sinus_pressure</option>
-                <option value="runny_nose">runny_nose</option>
-                <option value="congestion">congestion</option>
-                <option value="chest_pain">chest_pain</option>
-            </select><br>
-            <label for="select4">Symptom 4:</label>
-            <select name="select4" id="select4">
-                <option value="select_symptom">Select suitable symptoms</option>
-                <option value="back_pain">back_pain</option>
-                <option value="abdominal_pain">abdominal_pain</option>
-                <option value="diarrhoea">diarrhoea</option>
-                <option value="mild_fever">mild_fever</option>
-                <option value="yellow_urine">yellow_urine</option>
-                <option value="yellowing_of_eyes">yellowing_of_eyes</option>
-                <option value="acute_liver_failure">acute_liver_failure</option>
-                <option value="fluid_overload">fluid_overload</option>
-                <option value="swelling_of_stomach">swelling_of_stomach</option>
-                <option value="swelled_lymph_nodes">swelled_lymph_nodes</option>
-                <option value="malaise">malaise</option>
-                <option value="blurred_and_distorted_vision">blurred_and_distorted_vision</option>
-                <option value="phlegm">phlegm</option>
-                <option value="throat_irritation">throat_irritation</option>
-                <option value="redness_of_eyes">redness_of_eyes</option>
-                <option value="sinus_pressure">sinus_pressure</option>
-                <option value="runny_nose">runny_nose</option>
-                <option value="congestion">congestion</option>
-                <option value="chest_pain">chest_pain</option>
-            </select><br>
-            <button type="submit">Predict Disease</button>
-        </form>
-        {% if result %}
-        <div class="result">
-            <p>{{ result }}</p>
-        </div>
-        {% endif %}
-    </div>
-</body>
+    <div class="nvbar">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #45526e">
+        <div class="container-fluid">
+          <a class="navbar-brand logo" href="#"><img src="/static/health_log-removebg-preview.png" style="width: 40px;" alt=""></a>
+          <a class="bold" href="#" aria-current="page" style="font-size: 30px;">Health care</a>
+          
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item ">
+                <a class="navbar-brand" href="#"></a>
+              </li>
+              <li class="nav-item">
+                <a class="navbar-brand" href="#">Consult to listed doctors</a>
+              </li>
+              <li class="nav-item">
+                <a class="navbar-brand" href="#"></a>
+              </li>
+            </ul>
+            <form class="d-inline-flex flex-column my-2 mx-2 justify-content-center align-items-center my-lg-0">
+                <!-- <button class="btn btn-outline-light mx-1 my-2 my-sm-0" type="button">login</button> -->
+                <img src="/static/vecteezy_user-icon-on-transparent-background_19879186.png" alt="Error" class="img-fluid " style="width: 50px;">
+                 <a class=" mx-2 my-2 my-sm-0" style="color: #ffff;"> {{ session['username'] }}</a>
+              </form>
+            <form class="d-flex">
+             <a href="#" class="btn btn-outline-danger">Admin login</a>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+
+    
+      <!-- <div class="ins">
+          <h2>How it works</h2>
+          <p>1: Enter the symptoms</p>
+          <p>2: Consult to a listed clinics doctor Or </p>
+          <p>3: Find doctor near to you</p>
+      </div> -->
+      
+      <div class="container">
+        <div class="anime">
+         Determine <span></span>
+        </div>
+     </div>
+
+     <div class="main">
+      
+     </div>
+
+     <div class="sec-container">
+        <!-- Health Prediction Section -->
+        <div id="health-prediction" class="service-section">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Find your illness</h2>
+                    <p>Our health prediction service helps you understand potential health risks based on your symptoms. Use our AI-powered tool to get insights and recommendations. This service leverages advanced machine learning algorithms to analyze your symptoms and provide possible diagnoses. Our tool is designed to assist in early detection of diseases, allowing you to take proactive steps towards your health and well-being.</p>
+                    <p>To use our Health Prediction service, simply enter your symptoms in the form below. Our system will process the information and provide you with a probable diagnosis along with recommended actions. This service is not a substitute for professional medical advice, but it can be a valuable first step in understanding your health condition.</p>
+                </div>
+                <div class="col-md-6 bg-c">
+                    <!-- <img src="https://via.placeholder.com/600x400" alt="Health Prediction"> -->
+
+                    <form action="/symptomes" class="form" method="post">
+                        <label for="select1">Symptom 1:</label>
+                        <select name="select1" class="select" id="select1">
+                            <option value="select_symptom">Select suitable symptoms</option>
+                            <option value="back_pain">back_pain</option>
+                            <option value="abdominal_pain">abdominal_pain</option>
+                            <option value="diarrhoea">diarrhoea</option>
+                            <option value="mild_fever">mild_fever</option>
+                            <option value="yellow_urine">yellow_urine</option>
+                            <option value="yellowing_of_eyes">yellowing_of_eyes</option>
+                            <option value="acute_liver_failure">acute_liver_failure</option>
+                            <option value="fluid_overload">fluid_overload</option>
+                            <option value="swelling_of_stomach">swelling_of_stomach</option>
+                            <option value="swelled_lymph_nodes">swelled_lymph_nodes</option>
+                            <option value="malaise">malaise</option>
+                            <option value="blurred_and_distorted_vision">blurred_and_distorted_vision</option>
+                            <option value="phlegm">phlegm</option>
+                            <option value="throat_irritation">throat_irritation</option>
+                            <option value="redness_of_eyes">redness_of_eyes</option>
+                            <option value="sinus_pressure">sinus_pressure</option>
+                            <option value="runny_nose">runny_nose</option>
+                            <option value="congestion">congestion</option>
+                            <option value="chest_pain">chest_pain</option>
+                        </select><br>
+
+                            <label for="select1">Symptom 2:</label>
+                            <select name="select1" class="select" id="select1">
+                                <option value="select_symptom">Select suitable symptoms</option>
+                                <option value="back_pain">back_pain</option>
+                                <option value="abdominal_pain">abdominal_pain</option>
+                                <option value="diarrhoea">diarrhoea</option>
+                                <option value="mild_fever">mild_fever</option>
+                                <option value="yellow_urine">yellow_urine</option>
+                                <option value="yellowing_of_eyes">yellowing_of_eyes</option>
+                                <option value="acute_liver_failure">acute_liver_failure</option>
+                                <option value="fluid_overload">fluid_overload</option>
+                                <option value="swelling_of_stomach">swelling_of_stomach</option>
+                                <option value="swelled_lymph_nodes">swelled_lymph_nodes</option>
+                                <option value="malaise">malaise</option>
+                                <option value="blurred_and_distorted_vision">blurred_and_distorted_vision</option>
+                                <option value="phlegm">phlegm</option>
+                                <option value="throat_irritation">throat_irritation</option>
+                                <option value="redness_of_eyes">redness_of_eyes</option>
+                                <option value="sinus_pressure">sinus_pressure</option>
+                                <option value="runny_nose">runny_nose</option>
+                                <option value="congestion">congestion</option>
+                                <option value="chest_pain">chest_pain</option>
+                            </select><br>
+
+                            
+                                <label for="select1">Symptom 3:</label>
+                                <select name="select1" class="select" id="select1">
+                                    <option value="select_symptom">Select suitable symptoms</option>
+                                    <option value="back_pain">back_pain</option>
+                                    <option value="abdominal_pain">abdominal_pain</option>
+                                    <option value="diarrhoea">diarrhoea</option>
+                                    <option value="mild_fever">mild_fever</option>
+                                    <option value="yellow_urine">yellow_urine</option>
+                                    <option value="yellowing_of_eyes">yellowing_of_eyes</option>
+                                    <option value="acute_liver_failure">acute_liver_failure</option>
+                                    <option value="fluid_overload">fluid_overload</option>
+                                    <option value="swelling_of_stomach">swelling_of_stomach</option>
+                                    <option value="swelled_lymph_nodes">swelled_lymph_nodes</option>
+                                    <option value="malaise">malaise</option>
+                                    <option value="blurred_and_distorted_vision">blurred_and_distorted_vision</option>
+                                    <option value="phlegm">phlegm</option>
+                                    <option value="throat_irritation">throat_irritation</option>
+                                    <option value="redness_of_eyes">redness_of_eyes</option>
+                                    <option value="sinus_pressure">sinus_pressure</option>
+                                    <option value="runny_nose">runny_nose</option>
+                                    <option value="congestion">congestion</option>
+                                    <option value="chest_pain">chest_pain</option>
+                                </select><br>
+
+                                
+                                    <label for="select1">Symptom 4:</label>
+                                    <select name="select1" class="select" id="select1">
+                                        <option value="select_symptom">Select suitable symptoms</option>
+                                        <option value="back_pain">back_pain</option>
+                                        <option value="abdominal_pain">abdominal_pain</option>
+                                        <option value="diarrhoea">diarrhoea</option>
+                                        <option value="mild_fever">mild_fever</option>
+                                        <option value="yellow_urine">yellow_urine</option>
+                                        <option value="yellowing_of_eyes">yellowing_of_eyes</option>
+                                        <option value="acute_liver_failure">acute_liver_failure</option>
+                        <option value="fluid_overload">fluid_overload</option>
+                        <option value="swelling_of_stomach">swelling_of_stomach</option>
+                        <option value="swelled_lymph_nodes">swelled_lymph_nodes</option>
+                        <option value="malaise">malaise</option>
+                        <option value="blurred_and_distorted_vision">blurred_and_distorted_vision</option>
+                        <option value="phlegm">phlegm</option>
+                        <option value="throat_irritation">throat_irritation</option>
+                        <option value="redness_of_eyes">redness_of_eyes</option>
+                        <option value="sinus_pressure">sinus_pressure</option>
+                        <option value="runny_nose">runny_nose</option>
+                        <option value="congestion">congestion</option>
+                        <option value="chest_pain">chest_pain</option>
+                    </select><br>
+
+                    <label for="select1">Symptom 5:</label>
+                    <select name="select1" class="select" id="select1">
+                        <option value="select_symptom">Select suitable symptoms</option>
+                        <option value="back_pain">back_pain</option>
+                        <option value="abdominal_pain">abdominal_pain</option>
+                        <option value="diarrhoea">diarrhoea</option>
+                        <option value="mild_fever">mild_fever</option>
+                        <option value="yellow_urine">yellow_urine</option>
+                        <option value="yellowing_of_eyes">yellowing_of_eyes</option>
+                        <option value="acute_liver_failure">acute_liver_failure</option>
+                        <option value="fluid_overload">fluid_overload</option>
+                        <option value="swelling_of_stomach">swelling_of_stomach</option>
+                        <option value="swelled_lymph_nodes">swelled_lymph_nodes</option>
+                        <option value="malaise">malaise</option>
+                        <option value="blurred_and_distorted_vision">blurred_and_distorted_vision</option>
+                        <option value="phlegm">phlegm</option>
+                        <option value="throat_irritation">throat_irritation</option>
+                        <option value="redness_of_eyes">redness_of_eyes</option>
+                        <option value="sinus_pressure">sinus_pressure</option>
+                        <option value="runny_nose">runny_nose</option>
+                        <option value="congestion">congestion</option>
+                        <option value="chest_pain">chest_pain</option>
+                        </select><br>
+                        <button type="submit" class="btn btn-primary">Predict Disease</button>
+        </form>
+                </div>
+            </div>
+        </div>
+     <div class="map-area">
+        <h2 class="find-map">Find doctor near you</h2>
+       <div class="map">
+
+       </div>
+     </div>      
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
 </html>
