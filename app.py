@@ -26,6 +26,17 @@ def home():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+@app.route('/map')
+def map():
+    return render_template('map.html')
+
+@app.route('/hospital_info1', methods=['GET'])
+def hospital_info1():
+    hospital_name = request.args.get('hospital_name')
+    # Your logic to handle hospital_name goes here
+    return render_template('appoint.html', hospital_name=hospital_name)
+
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
