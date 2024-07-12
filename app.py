@@ -23,6 +23,12 @@ model2 = joblib.load('disease_classifier_bayes.pkl')
 def home():
     return render_template('unati2.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 
 @app.route('/healthinfo/')
 def healthinfo():
